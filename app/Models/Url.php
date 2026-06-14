@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use DateTime;
+use Illuminate\Database\Eloquent\Model;
+
+class Url extends Model
+{
+    protected $fillable = [
+        'url_name',
+        'short_url_name',
+        'user_id'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+}
