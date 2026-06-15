@@ -1,58 +1,216 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# URL Shortener with Laravel
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <a href="https://laravel.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="300" alt="Laravel Logo">
+  </a>
 </p>
 
-## About Laravel
+<p align="center">
+  <strong>A fast and simple URL Shortener built with Laravel</strong><br>
+  Supports user authentication, role-based access, and link management.
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Table of Contents
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Overview](#overview)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Database Setup](#database-setup)
+- [Running the Project](#running-the-project)
+- [Testing](#testing)
+- [Project Structure](#project-structure)
+- [User Roles](#user-roles)
+- [License](#license)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Overview
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+This project is a web-based URL shortener built with [Laravel](https://laravel.com). It includes user registration and authentication, allowing users to create short links, search their history, and manage their own URLs. Administrators can view and search all links created by any user.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## Tech Stack
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- [Laravel 13.x](https://laravel.com/docs) — PHP Web Framework
+- [PHP 8.3](https://www.php.net/)
+- [Livewire 4.x](https://livewire.laravel.com/) — Interactive UI components without heavy JavaScript
+- [Laravel Breeze](https://laravel.com/docs/starter-kits#laravel-breeze) — Lightweight authentication scaffolding
+- [Tailwind CSS 4.x](https://tailwindcss.com/) — Utility-first CSS framework
+- [Flowbite](https://flowbite.com/) — UI components built on Tailwind CSS
+- [Alpine.js](https://alpinejs.dev/) — Lightweight JavaScript framework
+- [Vite](https://vitejs.dev/) — Frontend build tool
+- [MySQL](https://www.mysql.com/) — Primary database
+
+---
+
+## Features
+
+- 🔐 User registration and authentication via Laravel Breeze
+- 🔗 Create short links from long URLs with auto-generated 5-character short codes
+- 📋 List links with original URL, short URL, creation date, and creator
+- 🔍 Search links by:
+  - Original URL
+  - Creation date
+  - Creator (admin only)
+- 📄 Pagination support
+- 🔔 Toast notifications for user feedback
+- 👤 Role-based access: regular users see only their own links, admins see all links
+
+---
+
+## Requirements
+
+- PHP >= 8.3
+- Composer
+- Node.js and npm
+- MySQL or MariaDB
+- Required PHP extensions: `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`
+
+---
+
+## Installation
+
+### 1. Clone the project and install dependencies
 
 ```bash
-composer require laravel/boost --dev
+# Install PHP dependencies
+composer install
 
-php artisan boost:install
+# Install JavaScript dependencies
+npm install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Set up the environment file
 
-## Contributing
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Configure the database
 
-## Code of Conduct
+Update the `.env` file with your database credentials. For example:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=short_url
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Security Vulnerabilities
+Then run the migrations:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+php artisan migrate
+```
+
+Alternatively, you can run the full setup with one command:
+
+```bash
+composer run setup
+```
+
+---
+
+## Database Setup
+
+The application uses MySQL as the default database. Make sure you have created the database specified in your `.env` file before running migrations.
+
+Key migrations:
+
+- `0001_01_01_000000_create_users_table.php` — Users, password resets, and sessions
+- `2026_06_14_042522_create_urls_table.php` — Shortened URLs
+
+---
+
+## Running the Project
+
+### Development Mode
+
+```bash
+composer run dev
+```
+
+This command starts:
+- Laravel Development Server
+- Queue Worker (`php artisan queue:listen`)
+- Vite Dev Server
+
+Then open your browser at [http://localhost:8000](http://localhost:8000)
+
+### Production Build
+
+```bash
+npm run build
+```
+
+---
+
+## Testing
+
+Run the test suite with:
+
+```bash
+composer run test
+```
+
+Or directly with Artisan:
+
+```bash
+php artisan test
+```
+
+---
+
+## Project Structure
+
+```
+url-shortener-laravel/
+├── app/
+│   ├── Actions/
+│   │   └── CreateLinkAction.php      # Business logic for creating links
+│   ├── DTOs/
+│   │   └── LinkDTO.php               # Data transfer object for links
+│   ├── Http/Controllers/
+│   │   ├── LinkController.php        # Handles link pages
+│   │   └── ManageLinkController.php  # Handles link management pages
+│   ├── Livewire/Link/
+│   │   └── LinkComponent.php         # Livewire component for creating and searching links
+│   └── Models/
+│       ├── Url.php                   # URL model
+│       └── User.php                  # User model
+├── database/migrations/
+│   └── 2026_06_14_042522_create_urls_table.php
+├── resources/views/
+│   ├── links/index.blade.php
+│   └── livewire/link/link-component.blade.php
+├── routes/
+│   └── web.php
+└── README.md
+```
+
+---
+
+## User Roles
+
+| Role  | Capabilities |
+|-------|-------------|
+| Guest | Can view the landing page, but must log in to create links |
+| User  | Can create, search, and view their own links |
+| Admin | Can create, search, and view all users' links, including search by creator |
+
+The default user role in the `users` table is `guest`. You can change a user's role to `admin` directly in the database.
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
