@@ -17,4 +17,9 @@ class Url extends Model
         'created_at' => 'date',
         'updated_at' => 'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

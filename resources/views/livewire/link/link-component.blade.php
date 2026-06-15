@@ -111,7 +111,7 @@
                                             Short Url
                                         </th>
                                         <th scope="col" class="px-6 py-3 font-medium">
-                                            Created
+                                            Created Date
                                         </th>
                                     </tr>
                                 </thead>
