@@ -19,7 +19,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('/links', LinkController::class);
-    Route::get('/manage-links', [ManageLinkController::class, 'index'])->name('manage-links');
 });
 
 require __DIR__.'/auth.php';

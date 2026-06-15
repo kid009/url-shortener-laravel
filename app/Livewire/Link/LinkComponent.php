@@ -19,7 +19,9 @@ class LinkComponent extends Component
     public string $urlName = '';
     public string $shortUrlName = '';
     public int $userId;
-    public string $query = '';
+    public string $search_url = '';
+    public string $search_created_date = '';
+    public string $search_created_by = '';
 
     public function save(CreateLinkAction $action)
     {
@@ -62,10 +64,28 @@ class LinkComponent extends Component
 
     public function render()
     {
-        $urls = Url::where('url_name', 'like', '%' . $this->query . '%')->where('user_id', Auth::id())->simplePaginate(10);
+        $isAdmin = Auth::user()->role === 'admin';
+
+        $urls = Url::query()
+            ->when($this->search_url, function ($query) {
+                $query->where('url_name', 'like', '%' . $this->search_url . '%');
+            })
+            ->when($this->search_created_date, function ($query) {
+                $query->whereDate('created_at', $this->search_created_date);
+            })
+            ->when($this->search_created_by, function ($query) {
+                $query->whereHas('user', function ($q) {
+                    $q->where('name', 'like', '%' . $this->search_created_by . '%');
+                });
+            })
+            ->when(!$isAdmin, function($q){
+                $q->where('user_id', Auth::id());
+            })
+            ->simplePaginate(10);
 
         return view('livewire.link.link-component', [
             'urls' => $urls,
+            'isAdmin' => $isAdmin,
         ]);
     }
 }
